@@ -1,0 +1,619 @@
+[
+  {
+    "category": "general",
+    "text": "Qu'est-ce qu'une donnée sensible dans une application?",
+    "options": [
+      "Toute donnée stockée en base",
+      "Une donnée dont la divulgation/altération peut causer un préjudice",
+      "Uniquement les mots de passe",
+      "Uniquement les données personnelles"
+    ],
+    "answer": 1,
+    "explain": "Une donnée est sensible si son exposition/altération impacte la confidentialité, l'intégrité ou la disponibilité (CIA). Cela peut inclure secrets, PII, santé, finance, propriété intellectuelle, etc."
+  },
+  {
+    "category": "stockage",
+    "text": "Quelle pratique est RECOMMANDÉE pour le stockage des secrets applicatifs?",
+    "options": [
+      "Les mettre dans le code source privé",
+      "Les stocker en variables d'environnement chiffrées et/ou via un coffre-fort (KMS/Vault)",
+      "Les déposer dans un fichier .env commité",
+      "Les partager par email interne"
+    ],
+    "answer": 1,
+    "explain": "Utiliser un secret manager (Vault, AWS KMS/Secrets Manager, GCP KMS, Azure Key Vault) et limiter l'exposition via IAM et rotation." 
+  },
+  {
+    "category": "transmission",
+    "text": "Quel protocole est approprié pour protéger les données en transit?",
+    "options": ["TLS 1.0", "TLS 1.2+", "HTTP", "FTP"],
+    "answer": 1,
+    "explain": "Utiliser TLS 1.2 ou supérieur avec des suites robustes (ex: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) et HSTS pour forcer HTTPS."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Quel algorithme est adapté pour chiffrer des données au repos?",
+    "options": ["AES-256-GCM", "MD5", "SHA-1", "DES"],
+    "answer": 0,
+    "explain": "AES en mode GCM (authentifié) est recommandé pour la confidentialité et l'intégrité. MD5/SHA-1 sont des hachages obsolètes, DES est faible."
+  },
+  {
+    "category": "general",
+    "text": "Quel principe d'accès appliquer par défaut?",
+    "options": ["Accès total", "Moindre privilège", "Accès par héritage", "Accès public"],
+    "answer": 1,
+    "explain": "Le principe du moindre privilège limite l'impact d'une compromission et réduit la surface d'attaque."
+  },
+  {
+    "category": "stockage",
+    "text": "Comment stocker les mots de passe utilisateurs?",
+    "options": [
+      "En clair pour simplifier le support",
+      "Chiffrement réversible AES",
+      "Hachage robuste avec salage (ex: bcrypt/argon2)",
+      "Hash MD5 simple"
+    ],
+    "answer": 2,
+    "explain": "Utiliser un KDF résistant (argon2, bcrypt, scrypt) avec sel unique et paramètres adaptés (coût mémoire/CPU)."
+  },
+  {
+    "category": "transmission",
+    "text": "Que signifie HSTS?",
+    "options": [
+      "HTTP Strict Transport Security",
+      "Hash-based Transport Security",
+      "High TLS Security",
+      "HTTP Secure Tunnel"
+    ],
+    "answer": 0,
+    "explain": "HSTS force l'utilisation d'HTTPS côté navigateur, limitant les attaques de downgrade/strip."
+  },
+  {
+    "category": "chiffrement",
+    "text": "À quoi sert un IV/nonce unique dans un chiffrement symétrique?",
+    "options": [
+      "Accélérer le chiffrement",
+      "Assurer l'unicité et éviter les fuites de motifs",
+      "Remplacer la clé",
+      "Vérifier l'identité"
+    ],
+    "answer": 1,
+    "explain": "Un IV/nonce unique par message empêche la réutilisation et protège contre l'analyse statistique."
+  },
+  {
+    "category": "general",
+    "text": "Qu'est-ce que la classification des données?",
+    "options": [
+      "Attribuer des rôles aux utilisateurs",
+      "Catégoriser les données selon leur sensibilité et exigences de protection",
+      "Indexer les données pour la recherche",
+      "Compresser les données"
+    ],
+    "answer": 1,
+    "explain": "Classification: public, interne, confidentiel, secret. Guide la protection (chiffrement, accès, traçabilité)."
+  },
+  {
+    "category": "stockage",
+    "text": "Quelle mesure réduit l'impact d'une fuite de base de données chiffrée?",
+    "options": [
+      "Clé dure-codée",
+      "Rotation régulière des clés et séparation des rôles",
+      "Même clé pour tout",
+      "Partage de clé par chat"
+    ],
+    "answer": 1,
+    "explain": "Rotation de clés, gestion via KMS, séparation des privilèges, enveloppe de clés (DEK/KEK)."
+  },
+  {
+    "category": "transmission",
+    "text": "Qu'est-ce que le pinning de certificat (Certificate Pinning)?",
+    "options": [
+      "Forcer un cipher suite",
+      "Vérifier que le certificat du serveur correspond à une ancre/clé attendue",
+      "Toujours utiliser HTTP/2",
+      "Désactiver la vérification" 
+    ],
+    "answer": 1,
+    "explain": "Le pinning réduit le risque d'interception via un CA compromis mais doit être géré strictement (rotation, fallback)."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Quel est le bon usage d'un HSM/KMS?",
+    "options": [
+      "Stocker des logs",
+      "Générer et protéger les clés de chiffrement/signature",
+      "Servir des pages web",
+      "Stocker des images"
+    ],
+    "answer": 1,
+    "explain": "Un HSM/KMS protège les clés, fournit des opérations cryptographiques et permet la rotation/audit."
+  },
+  {
+    "category": "general",
+    "text": "Que faut-il éviter côté client (front) concernant les secrets?",
+    "options": [
+      "Stocker des clés API sensibles dans le code front",
+      "Utiliser des variables d'environnement côté serveur",
+      "Proxies ou tokens à durée de vie courte",
+      "Scopes/permissions limités"
+    ],
+    "answer": 0,
+    "explain": "Jamais exposer de secrets côté client. Préférer un backend proxy, tokens limités et courte durée."
+  },
+  {
+    "category": "general",
+    "text": "Quel cadre de référence est recommandé pour la sécurité applicative?",
+    "options": [
+      "OWASP ASVS",
+      "ISO 8601",
+      "PCI PIN",
+      "SMTP RFC"
+    ],
+    "answer": 0,
+    "explain": "L'OWASP ASVS fournit une liste de contrôles de sécurité applicative par niveau. À compléter par OWASP Top 10 et MASVS (mobile)."
+  },
+  {
+    "category": "stockage",
+    "text": "Quel outil/approche pour gérer les secrets en entreprise?",
+    "options": [
+      "Variables hardcodées + README",
+      "Gestion centralisée via HashiCorp Vault/AWS Secrets Manager/GCP Secret Manager/Azure Key Vault",
+      "Partage Slack chiffré",
+      "Email interne"
+    ],
+    "answer": 1,
+    "explain": "Utiliser un coffre-fort à secrets, avec politiques IAM, audit, rotation automatique, et intégration CI/CD."
+  },
+  {
+    "category": "transmission",
+    "text": "Quelle pratique renforce l'authentification serveur-serveur?",
+    "options": [
+      "Basic Auth",
+      "mTLS (mutual TLS)",
+      "JWT sans signature",
+      "Cookie non sécurisé"
+    ],
+    "answer": 1,
+    "explain": "mTLS authentifie les deux extrémités. En complément: rotation de certificats, pinning, et politiques réseau Zero Trust."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Quelle bonne pratique de gestion de clés en cloud?",
+    "options": [
+      "Clés dans des fichiers sur l'instance",
+      "KMS/HSM managé avec rotation et enveloppe de clés (DEK/KEK)",
+      "Même clé partout",
+      "Partage par document"
+    ],
+    "answer": 1,
+    "explain": "Utiliser KMS/HSM (AWS KMS, Cloud KMS, Key Vault) avec enveloppe (DEK chiffrées par KEK), rotation, CMK/BYOK selon le besoin."
+  },
+  {
+    "category": "general",
+    "text": "Quel outil est adapté au scanning de secrets dans le code/repo?",
+    "options": [
+      "GitLeaks/TruffleHog",
+      "curl",
+      "sed",
+      "scp"
+    ],
+    "answer": 0,
+    "explain": "Intégrer un scanner de secrets (GitLeaks, TruffleHog) dans la CI, avec prévention côté pre-commit et révoquer tout secret exposé."
+  },
+  {
+    "category": "general",
+    "text": "Quelle approche de tests est recommandée pour le code de sécurité?",
+    "options": [
+      "Ignorer les tests pour aller vite",
+      "SAST/DAST + tests unitaires/integ + fuzzing",
+      "Uniquement des tests E2E",
+      "Tests manuels occasionnels"
+    ],
+    "answer": 1,
+    "explain": "Combiner SAST (Semgrep, SonarQube), DAST (OWASP ZAP, Burp), SCA (vulns de dépendances), et fuzzing sur les entrées critiques."
+  },
+  {
+    "category": "stockage",
+    "text": "Comment réduire les risques liés aux logs contenant des données sensibles?",
+    "options": [
+      "Tout logger en clair",
+      "Masquage/pseudonymisation + filtrage + rétention limitée",
+      "Exporter vers email",
+      "Désactiver tous les logs"
+    ],
+    "answer": 1,
+    "explain": "Appliquer la minimisation, masquage (tokenization), contrôle d'accès aux logs, et rétention conforme (RGPD/ISO 27001)."
+  },
+  {
+    "category": "transmission",
+    "text": "Comment protéger des APIs exposées sur Internet?",
+    "options": [
+      "Aucune rate limit",
+      "WAF/API Gateway + OAuth2/OIDC + rate limiting + TLS + validation stricte",
+      "IP whitelisting uniquement",
+      "JWT non expirant"
+    ],
+    "answer": 1,
+    "explain": "Utiliser un API Gateway (Apigee, Kong, AWS API Gateway) avec authentN/OAuth2, validation schema (OpenAPI), quotas et observabilité."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Pour signer des jetons JWT côté serveur, que recommandez-vous?",
+    "options": [
+      "alg=none",
+      "RSA/ECDSA avec rotation de clés et kid",
+      "MD5",
+      "Base64"
+    ],
+    "answer": 1,
+    "explain": "Signer avec RS256/ES256, publier la JWKS, rotation des clés, temps de vie court, et audience/scope stricts."
+  },
+  {
+    "category": "general",
+    "text": "Quel principe RGPD s'applique fortement au design d'applications?",
+    "options": [
+      "Privacy by Design/Default",
+      "Collecte maximale",
+      "Partage libre",
+      "Consentement forcé permanent"
+    ],
+    "answer": 0,
+    "explain": "Intégrer la protection des données dès la conception, minimiser la collecte, et régler par défaut en mode le plus protecteur."
+  },
+  {
+    "category": "general",
+    "text": "Quel artefact RGPD doit exister en entreprise?",
+    "options": [
+      "Registre des traitements",
+      "Clé USB partagée",
+      "Liste d'emails",
+      "QR code interne"
+    ],
+    "answer": 0,
+    "explain": "Le registre des traitements décrit finalités, bases légales, durées de conservation, catégories de données et mesures de sécurité."
+  },
+  {
+    "category": "stockage",
+    "text": "Comment traiter les sauvegardes (backups) contenant des données sensibles?",
+    "options": [
+      "Sans chiffrement pour la vitesse",
+      "Chiffrement, test de restauration, accès restreint et rétention documentée",
+      "Partage cloud public",
+      "Copie sur poste personnel"
+    ],
+    "answer": 1,
+    "explain": "Backups chiffrés (AES-GCM), clés via KMS/HSM, tests réguliers, séparation des rôles, et politiques de rétention conformes."
+  },
+  {
+    "category": "transmission",
+    "text": "Quel en-tête HTTP aide à réduire les risques côté navigateur?",
+    "options": [
+      "Content-Security-Policy (CSP)",
+      "X-Powered-By",
+      "Server",
+      "ETag"
+    ],
+    "answer": 0,
+    "explain": "CSP restreint les sources de scripts/styles/médias. À combiner avec HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Quelle recommandation pour les fonctions de hachage des mots de passe?",
+    "options": [
+      "bcrypt/argon2 avec paramètres adaptés",
+      "SHA-256 simple",
+      "MD5 + sel",
+      "CRC32"
+    ],
+    "answer": 0,
+    "explain": "Privilégier Argon2id ou bcrypt avec coût calibré, sel unique, et éventuellement pepper côté serveur."
+  },
+  {
+    "category": "general",
+    "text": "Quelle démarche de gouvernance sécurité est pertinente?",
+    "options": [
+      "Aucune politique écrite",
+      "Politique, normes, procédures + comités, KPIs, audits réguliers",
+      "Politique orale",
+      "Décisions ad hoc"
+    ],
+    "answer": 1,
+    "explain": "Établir une gouvernance (RSSI/DPO), politique SSI, normes (password, logging, classement), procédures, comités de risques, audits, formation."
+  },
+  {
+    "category": "general",
+    "text": "Quel outil pour l'analyse IaC (Infrastructure as Code)?",
+    "options": [
+      "Checkov/tfsec",
+      "tar",
+      "netcat",
+      "ping"
+    ],
+    "answer": 0,
+    "explain": "Scanner IaC (Terraform, Kubernetes) pour détecter expositions (S3 public, SG ouverts). Compléter par CIS Benchmarks et CSPM."
+  },
+  {
+    "category": "stockage",
+    "text": "Comment gérer les données personnelles pour réduire le risque?",
+    "options": [
+      "Collecter tout",
+      "Minimisation, anonymisation/pseudonymisation, chiffrement au repos",
+      "Exporter vers Excel",
+      "Copier en local"
+    ],
+    "answer": 1,
+    "explain": "Limiter à l'indispensable, pseudonymiser/anonymiser, appliquer DLP, et contrôler l'accès via RBAC/ABAC."
+  },
+  {
+    "category": "transmission",
+    "text": "Quelle recommandation pour les webhooks entrants?",
+    "options": [
+      "Aucune vérification",
+      "Signature HMAC + mTLS optionnel + IP allowlist + idempotency",
+      "Auth Basic",
+      "Webhook public"
+    ],
+    "answer": 1,
+    "explain": "Vérifier la signature, imposer TLS, limiter par IP, traiter en idempotent et journaliser avec masquage des PII."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Quelles bibliothèques privilégier pour la crypto côté app?",
+    "options": [
+      "Libs natives éprouvées (libsodium, WebCrypto, BouncyCastle)",
+      "Implémentation maison",
+      "Copier un snippet StackOverflow",
+      "Aucune"
+    ],
+    "answer": 0,
+    "explain": "Éviter d'écrire sa propre crypto. Utiliser des libs éprouvées, packages maintenus, et activer AEAD (GCM/ChaCha20-Poly1305)."
+  },
+  {
+    "category": "general",
+    "text": "Quel modèle s'applique au cloud en matière de sécurité?",
+    "options": [
+      "Responsabilité partagée",
+      "Responsabilité totale du provider",
+      "Responsabilité totale du client",
+      "Aucune responsabilité"
+    ],
+    "answer": 0,
+    "explain": "Le cloud suit un modèle de responsabilité partagée: le provider sécurise l'infra, le client sécurise ses données/configurations."
+  },
+  {
+    "category": "general",
+    "text": "Quelle bonne pratique pour la gestion de tokens d'accès?",
+    "options": [
+      "Durée longue et sans rotation",
+      "Durée courte, scopes minimaux, rotation et révocation",
+      "Partage par email",
+      "Stockage en clair"
+    ],
+    "answer": 1,
+    "explain": "Utiliser des tokens courts, rafraîchissement sécurisé, scopes limités, stockage sûr (httpOnly cookies côté web), et révocation."
+  },
+  {
+    "category": "stockage",
+    "text": "Comment éviter les expositions de buckets/objets cloud?",
+    "options": [
+      "Rendre publics par défaut",
+      "Blocage du public, politiques IAM least privilege, chiffrement côté serveur (SSE-KMS)",
+      "Partager le lien",
+      "Désactiver le chiffrement"
+    ],
+    "answer": 1,
+    "explain": "Activer le blocage public (S3 Block Public Access), utiliser IAM précis, SSE-KMS, et scanner l'exposition (CSPM)."
+  },
+  {
+    "category": "transmission",
+    "text": "Comment traiter les cookies d'auth côté web?",
+    "options": [
+      "Sans Secure/HttpOnly/SameSite",
+      "Secure + HttpOnly + SameSite=Lax/Strict + rotation",
+      "Tout en localStorage",
+      "Partage par JS"
+    ],
+    "answer": 1,
+    "explain": "Cookies d'auth protégés (Secure, HttpOnly, SameSite), rotation, et CSRF tokens si nécessaire, avec TLS et CSP."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Quelle stratégie pour les données très sensibles (ex: santé/finance)?",
+    "options": [
+      "Aucune mesure spécifique",
+      "Chiffrement fort, tokenization, contrôle d'accès stricte, surveillance/anomalies",
+      "Partage large",
+      "Sauvegarde non chiffrée"
+    ],
+    "answer": 1,
+    "explain": "Appliquer tokenization, chiffrement AEAD, segmentation réseau, PAM, surveillance (SIEM/UEBA), et revue régulière des accès."
+  }
+  ,
+  {
+    "category": "general",
+    "text": "Quelle est la complexité temporelle de ce code?\n\n```js\nfunction hasDup(arr) {\n  const s = new Set();\n  for (const v of arr) {\n    if (s.has(v)) return true;\n    s.add(v);\n  }\n  return false;\n}\n```",
+    "options": ["O(n)", "O(n log n)", "O(n^2)", "O(1)"],
+    "answer": 0,
+    "explain": "Une seule passe sur le tableau; Set offre insertion/lookup amorti O(1). Donc O(n)."
+  },
+  {
+    "category": "general",
+    "text": "Quel sera l'affichage en JavaScript natif?\n\n```js\nconst a = [10, 2, 1];\na.sort();\nconsole.log(a);\n```",
+    "options": ["[1,2,10]", "[1,10,2]", "[10,2,1]", "Erreur"],
+    "answer": 1,
+    "explain": "Sans comparateur, sort() trie des chaînes (lexicographiquement): '1' < '10' < '2' → [1,10,2]."
+  },
+  {
+    "category": "general",
+    "text": "Quel problème présente ce code Python?\n\n```py\ndef append_item(item, bucket=[]):\n    bucket.append(item)\n    return bucket\n```",
+    "options": [
+      "Erreur de syntaxe",
+      "Mutabilité du paramètre par défaut partagée entre appels",
+      "Problème de performance O(n^3)",
+      "Aucun"
+    ],
+    "answer": 1,
+    "explain": "La liste par défaut est évaluée une seule fois; elle est partagée par tous les appels sans argument explicite."
+  },
+  {
+    "category": "transmission",
+    "text": "Quel risque présente ce code côté navigateur?\n\n```js\nconst q = new URLSearchParams(location.search).get('q') || '';\ndocument.getElementById('out').innerHTML = 'Résultat: ' + q;\n```",
+    "options": ["XSS", "CSRF", "SSRF", "RCE"],
+    "answer": 0,
+    "explain": "innerHTML avec entrée non filtrée permet l'injection de HTML/JS (XSS). Préférer textContent ou un templating sécurisé."
+  },
+  {
+    "category": "chiffrement",
+    "text": "Quel choix est approprié pour stocker des mots de passe utilisateurs?",
+    "options": [
+      "SHA-256 sans sel",
+      "bcrypt/argon2/scrypt avec paramètres adaptés",
+      "MD5 salé",
+      "AES-256 en base"
+    ],
+    "answer": 1,
+    "explain": "Utiliser un KDF résistant (bcrypt/argon2/scrypt) avec sel unique et facteur de coût calibré."
+  },
+  {
+    "category": "general",
+    "text": "Quelle est la complexité temporelle de ce pseudo-code?\n\n```pseudo\nfor i in 1..n:\n  for j in 1..n:\n    work(i,j)\n```",
+    "options": ["O(n)", "O(n log n)", "O(n^2)", "O(1)"],
+    "answer": 2,
+    "explain": "Deux boucles imbriquées de 1..n donnent O(n^2)."
+  },
+  {
+    "category": "stockage",
+    "text": "Quel extrait est préférable pour gérer un secret côté serveur Node.js?\n\nA)\n```js\nconst API_KEY = 'sk_live_123456'; // hardcodé\n```\n\nB)\n```js\nconst API_KEY = process.env.API_KEY; // injecté par l'environnement/coffre\n```",
+    "options": ["A", "B", "A et B", "Aucun"],
+    "answer": 1,
+    "explain": "Éviter les secrets hardcodés. Utiliser variables d'environnement/Secret Manager avec IAM et rotation."
+  },
+  {
+    "category": "transmission",
+    "text": "Que NE faut-il pas faire avec des JWT?",
+    "options": [
+      "Conserver la clé de signature côté serveur",
+      "Publier la JWKS et faire la rotation des clés",
+      "Mettre le secret de signature dans le client",
+      "Imposer une durée de vie courte"
+    ],
+    "answer": 2,
+    "explain": "Ne jamais exposer le secret/clé privée côté client."
+  },
+  {
+    "category": "general",
+    "text": "Quel est le résultat de ce code JS?\n\n```js\nconst m = new Map();\nm.set('a', 1);\nm.set('b', 2);\nfor (const k in m) { console.log(k); }\n```",
+    "options": [
+      "Affiche 'a' puis 'b'",
+      "Affiche [\"a,b\"]",
+      "N'affiche rien",
+      "Erreur d'exécution"
+    ],
+    "answer": 2,
+    "explain": "Map n'est pas itéré par for...in (qui parcourt les propriétés énumérables). Utiliser for...of sur m.entries()/keys()."
+  }
+  ,
+  {
+    "category": "transmission",
+    "text": "Quel en-tête CSP aide le mieux à réduire les risques XSS dans une app web moderne?",
+    "options": [
+      "Content-Security-Policy: default-src *",
+      "Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-<aléatoire>'",
+      "Content-Security-Policy: script-src *",
+      "Content-Security-Policy: default-src 'unsafe-inline'"
+    ],
+    "answer": 1,
+    "explain": "Définir default-src 'self' et exiger un nonce pour les scripts réduit drastiquement l'exécution de scripts injectés. Éviter 'unsafe-inline' et wildcards."
+  },
+  {
+    "category": "transmission",
+    "text": "Quelle combinaison est la plus efficace contre la CSRF pour une app web avec session cookie?",
+    "options": [
+      "Utiliser uniquement les tokens JWT dans localStorage",
+      "SameSite=Lax/Strict sur le cookie + token CSRF synchronizer + vérification d'origine",
+      "Mettre le site en HTTP",
+      "Cacher les boutons sensibles dans l'UI"
+    ],
+    "answer": 1,
+    "explain": "Combiner SameSite (Lax/Strict), un anti-CSRF token (synchronizer/double-submit) et la validation d'Origin/Referer pour requêtes state-changing."
+  },
+  {
+    "category": "general",
+    "text": "Quelle pratique est RECOMMANDÉE pour sécuriser une API publique?",
+    "options": [
+      "Aucune authentification ni rate limiting",
+      "OAuth2/OIDC (scopes), validation stricte des entrées/schemas, rate limiting/quota, journaux, et mTLS entre services internes",
+      "JWT sans expiration et sans vérification d'audience",
+      "Accès par clé API exposée côté front"
+    ],
+    "answer": 1,
+    "explain": "Appliquer OAuth2/OIDC avec scopes, valider les entrées (JSON Schema/OpenAPI), limiter/quotas, journaliser, surveiller, et durcir les liens inter-services (mTLS)."
+  },
+  {
+    "category": "general",
+    "text": "Quel code est VULNÉRABLE à la SQLi et lequel est sécurisé?\n\nA) vulnérable\n```js\nconst q = `SELECT * FROM users WHERE email = '${email}'`;\n```\n\nB) sécurisé\n```js\nconst q = 'SELECT * FROM users WHERE email = ?';\ndb.execute(q, [email]);\n```",
+    "options": ["A vulnérable, B sécurisé", "A sécurisé, B vulnérable", "Les deux sécurisés", "Les deux vulnérables"],
+    "answer": 0,
+    "explain": "La concaténation de chaînes (A) est sujette à SQLi. L'utilisation de requêtes paramétrées (B) neutralise l'injection."
+  },
+  {
+    "category": "transmission",
+    "text": "Quelle configuration CORS est la plus sûre pour une API servant un seul front SPA sur https://app.exemple.com?",
+    "options": [
+      "Access-Control-Allow-Origin: *",
+      "Access-Control-Allow-Origin: https://app.exemple.com avec credentials=false sauf besoin, et liste blanche stricte",
+      "Access-Control-Allow-Origin: http://*",
+      "Autoriser toutes les origines et tous les headers"
+    ],
+    "answer": 1,
+    "explain": "Restreindre l'origine à l'app cliente, éviter les wildcards, n'activer credentials que si nécessaire, et limiter les headers/méthodes."
+  },
+  {
+    "category": "general",
+    "text": "Comment prévenir les vulnérabilités d'IDOR (Insecure Direct Object Reference)?",
+    "options": [
+      "Masquer les IDs côté client",
+      "Vérifier côté serveur que l'utilisateur est autorisé à accéder à la ressource (contrôle d'accès par enregistrement)",
+      "Utiliser des UUID suffit",
+      "Utiliser HTTPS uniquement"
+    ],
+    "answer": 1,
+    "explain": "L'IDOR se prévient par des contrôles d'autorisation systématiques sur chaque ressource/ID côté serveur, pas par l'obfuscation des identifiants."
+  },
+  {
+    "category": "general",
+    "text": "Dans une API REST, comment réduire le risque de 'mass assignment' (sur-attribution)?",
+    "options": [
+      "Accepter tel quel le JSON reçu",
+      "Utiliser une liste blanche (allowlist) de champs modifiables et mapper explicitement ceux-ci",
+      "Utiliser une liste noire (denylist) uniquement",
+      "Désactiver l'authentification"
+    ],
+    "answer": 1,
+    "explain": "Appliquer une allowlist de champs autorisés et ignorer les autres, couplée à une validation de schéma et des contrôles d'accès."
+  },
+  {
+    "category": "transmission",
+    "text": "Quel en-tête HTTP complète le dispositif de protection côté navigateur contre le clickjacking?",
+    "options": [
+      "X-Frame-Options: DENY / SAMEORIGIN ou frame-ancestors via CSP",
+      "X-Debug: on",
+      "Server: nginx",
+      "X-Powered-By: express"
+    ],
+    "answer": 0,
+    "explain": "X-Frame-Options (DENY/SAMEORIGIN) ou 'frame-ancestors' dans CSP empêchent l'inclusion non désirée dans des iframes."
+  },
+  {
+    "category": "general",
+    "text": "Pour exposer des webhooks de manière sécurisée, quelle combinaison est pertinente?",
+    "options": [
+      "Aucune vérification, accepter tout",
+      "Signature HMAC des payloads + mTLS optionnel + allowlist IP + idempotency + validation de schéma",
+      "Basic Auth sans TLS",
+      "JWT sans expiration"
+    ],
+    "answer": 1,
+    "explain": "Vérifier la signature HMAC, imposer TLS, gérer l'idempotence, limiter par IP quand possible et valider les payloads."
+  }
+]

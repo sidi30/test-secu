@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz | Données sensibles & Sécurité applicative</title>
+  <meta name="description" content="Quiz interactif sur les données sensibles et la sécurité applicative: stockage, transmission, chiffrement." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <div class="brand">
+        <img src="image.png" alt="APSI NE" class="logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <h1 class="title">Données sensibles & Sécurité applicative</h1>
+          <p class="subtitle">Stockage · Transmission · Chiffrement — Quiz interactif</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card intro" id="intro">
+      <h2>Bienvenue 👋</h2>
+      <p>
+        Testez vos connaissances et partagez les bonnes pratiques autour de la protection des données.
+        Sélectionnez une catégorie et lancez le quiz. Chaque question est accompagnée d'une explication.
+      </p>
+
+      <form id="setupForm" class="setup">
+        <div class="grid">
+          <label class="field">
+            <span class="label">Pseudo (pour le classement)</span>
+            <input id="nickname" name="nickname" class="input" placeholder="ex: dev-secops" maxlength="20" />
+          </label>
+
+          <label class="field">
+            <span class="label">Catégorie</span>
+            <select id="category" name="category" class="input">
+              <option value="mix">Mix (toutes)</option>
+              <option value="stockage">Stockage</option>
+              <option value="transmission">Transmission</option>
+              <option value="chiffrement">Chiffrement</option>
+              <option value="general">Général</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="label">Nb questions</span>
+            <select id="count" name="count" class="input">
+              <option>5</option>
+              <option selected>10</option>
+              <option>15</option>
+              <option>20</option>
+              <option>30</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="label">Temps/question (sec)</span>
+            <select id="perQuestion" name="perQuestion" class="input">
+              <option>15</option>
+              <option selected>30</option>
+              <option>45</option>
+              <option>60</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Lancer le quiz</button>
+        </div>
+      </form>
+
+      <details class="tips">
+        <summary>Conseils de sécurité (ouvrir)</summary>
+        <ul>
+          <li>Minimiser la collecte de données sensibles et définir une durée de conservation.</li>
+          <li>Appliquer le chiffrement au repos (storage) et en transit (TLS 1.2+).</li>
+          <li>Gérer les secrets via un coffre-fort (KMS/Vault), jamais en clair dans le code.</li>
+          <li>Mettre en place des contrôles d'accès (principe du moindre privilège).</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="card quiz hidden" id="quiz">
+      <div class="quiz__top">
+        <div class="progress">
+          <div id="progressBar" class="progress__bar" style="width:0%"></div>
+        </div>
+        <div class="status">
+          <span id="counter">1/10</span>
+          <span id="timer" class="timer">30s</span>
+        </div>
+      </div>
+
+      <div class="question" id="questionText">Question</div>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback"></div>
+
+      <div class="actions">
+        <button id="nextBtn" class="btn" disabled>Suivant</button>
+      </div>
+    </section>
+
+    <section class="card results hidden" id="results">
+      <h2>Résultats</h2>
+      <p id="scoreText">Score: 0/0</p>
+      <div id="review"></div>
+
+      <div class="actions">
+        <button id="restartBtn" class="btn">Rejouer</button>
+      </div>
+    </section>
+
+    <section class="card leaderboard" id="leaderboard">
+      <h2>Classement local</h2>
+      <ol id="board"></ol>
+      <p class="muted">Le classement est stocké localement (navigateur).</p>
+    </section>
+
+    <section class="card leaderboard" id="leaderboard-global">
+      <h2>Classement global</h2>
+      <ol id="globalBoard"></ol>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <small>
+        © 2025 — Quiz sécurité pour conférence. Code statique, offline-ready.
+        <a href="#" id="exportBtn">Exporter vos résultats</a>
+      </small>
+      <div class="signature">Conçu pour <strong>APSI NE</strong> — signé <strong>Ramzi SIDI IBRAHIM</strong></div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
